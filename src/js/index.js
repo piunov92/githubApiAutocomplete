@@ -32,14 +32,11 @@ function search() {
   }
 }
 
-function select(collection, data, callback, element = null) {
+function select(collection, data, callback) {
   for (item of collection) {
     item.addEventListener('click', (e) => {
       callback(e.target.textContent, data)
       searchField.value = ''
-      if (element) {
-        setTimeout(() => element.remove(), 600)
-      }
     })
   }
 }
@@ -48,9 +45,11 @@ function repoList(repoName, data) {
   const repos = document.createElement('div')
   const closeBtn = document.createElement('button')
   const wrapper = document.createElement('div')
+  const img = document.createElement('img')
   wrapper.className = 'content__wrapper'
   closeBtn.className = 'close-button'
-  closeBtn.textContent = 'close'
+  img.className = 'close-button__image'
+  img.setAttribute('src', './img/close-button.svg')
   repos.className = 'content__out'
   data.items.forEach((item) => {
     if (item.name === repoName) {
@@ -61,25 +60,14 @@ function repoList(repoName, data) {
   })
   repos.appendChild(wrapper)
   repos.appendChild(closeBtn)
+  closeBtn.append(img)
   content.append(repos)
+  closeBtn.addEventListener('click', (e) => {
+    repos.remove()
+  })
 }
 
-// repoList()
-
 searchField.addEventListener('input', debounce(search, 500))
-
-// function showAutocompletionList(data, sfValue = null) {
-//   searchAutocompletion.innerHTML = `<ul class="search__list"></ul>`
-//   const ul = searchAutocompletion.firstChild
-//   if (sfValue) {
-//     console.log(searchField.value)
-//     ul.innerHTML = data.join('')
-//     // const allItems = ul.querySelectorAll('.search__item')
-//     // select(allItems)
-//   } else {
-//     ul.remove()
-//   }
-// }
 
 async function request(searchString) {
   const data = await fetch(
@@ -91,11 +79,3 @@ async function request(searchString) {
     throw new Error('Error Http request ' + data.status)
   }
 }
-
-// search('Redux')
-//   .then((data) => {
-//     data.items.forEach((element) => {
-//       console.log(element.name)
-//     })
-//   })
-//   .catch((err) => console.log(err))

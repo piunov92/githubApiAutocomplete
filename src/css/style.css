@@ -69,6 +69,20 @@
 }
 
 .close-button {
+  position: relative;
+  top: 1.6rem;
+  height: 2.5rem;
+  width: 2.5rem;
+  border: none;
+  background: none;
   margin-right: 1rem;
   cursor: pointer;
+}
+
+.close-button__image {
+  position: relative;
+  top: -3px;
+  left: -8px;
+  height: inherit;
+  width: inherit;
 }
